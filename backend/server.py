@@ -529,6 +529,30 @@ async def update_system_setting(
 
 # ============== BULK OPERATIONS ==============
 
+@api_router.get("/sites/export")
+async def export_sites(db: Session = Depends(get_db)):
+    """Export all sites configuration"""
+    sites = db.query(Site).all()
+    
+    data = [
+        {
+            "name": site.name,
+            "url": site.url,
+            "duration": site.duration,
+            "interval": site.interval
+        }
+        for site in sites
+    ]
+    
+    filename = f"autoclick-sites-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
+    content = json.dumps(data, indent=2)
+    
+    return StreamingResponse(
+        io.BytesIO(content.encode()),
+        media_type="application/json",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
 @api_router.post("/sites/import")
 async def import_sites(bulk_import: BulkSiteImport, db: Session = Depends(get_db)):
     """Import multiple sites"""
