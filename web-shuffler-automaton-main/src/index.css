@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Black & Red Theme - Core Colors */
+    --background: 0 0% 5%;
+    --foreground: 0 80% 85%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 80% 85%;
+
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 80% 85%;
+
+    /* Red Primary */
+    --primary: 0 80% 55%;
+    --primary-foreground: 0 0% 98%;
+
+    /* Secondary - Dark Red */
+    --secondary: 0 50% 20%;
+    --secondary-foreground: 0 80% 85%;
+
+    /* Muted - Dark Gray */
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 20% 60%;
+
+    /* Accent - Bright Red */
+    --accent: 0 100% 50%;
+    --accent-foreground: 0 0% 98%;
+
+    /* Destructive - Darker Red */
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Warning - Orange Red */
+    --warning: 15 90% 55%;
+    --warning-foreground: 0 0% 98%;
+
+    /* Success - Green (keep for success states) */
+    --success: 120 60% 40%;
+    --success-foreground: 0 0% 98%;
+
+    --border: 0 30% 25%;
+    --input: 0 0% 10%;
+    --ring: 0 80% 55%;
+
+    --radius: 0.75rem;
+
+    /* Custom Red Theme Variables */
+    --terminal-red: 0 80% 55%;
+    --terminal-red-dim: 0 50% 30%;
+    --cyber-glow: 0 100% 50%;
+    --matrix-red: 0 70% 45%;
+    
+    /* Gradients */
+    --gradient-cyber: linear-gradient(135deg, hsl(0 80% 55% / 0.1), hsl(0 50% 30% / 0.05));
+    --gradient-terminal: linear-gradient(180deg, hsl(0 0% 10%), hsl(0 0% 5%));
+    
+    /* Shadows */
+    --shadow-cyber: 0 0 20px hsl(0 80% 55% / 0.3);
+    --shadow-glow: 0 4px 20px hsl(0 80% 55% / 0.15);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --pulse-duration: 2s;
+  }
+
+  .dark {
+    /* Force dark theme values with red accent */
+    --background: 0 0% 5%;
+    --foreground: 0 80% 85%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 80% 85%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 80% 85%;
+    --primary: 0 80% 55%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 50% 20%;
+    --secondary-foreground: 0 80% 85%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 20% 60%;
+    --accent: 0 100% 50%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 30% 25%;
+    --input: 0 0% 10%;
+    --ring: 0 80% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-mono;
+    background-image: 
+      radial-gradient(circle at 25% 25%, hsl(0 80% 55% / 0.05) 0%, transparent 25%),
+      radial-gradient(circle at 75% 75%, hsl(0 50% 30% / 0.03) 0%, transparent 25%);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+
+  /* Terminal glow effect */
+  .terminal-glow {
+    text-shadow: 0 0 10px hsl(var(--cyber-glow) / 0.5);
+  }
+
+  /* Pulse animation for active status */
+  .pulse-glow {
+    animation: pulse-glow var(--pulse-duration) ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px hsl(var(--cyber-glow) / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px hsl(var(--cyber-glow) / 0.6), 0 0 30px hsl(var(--cyber-glow) / 0.4);
+    }
+  }
+}
+
+@layer utilities {
+  .cyber-border {
+    border: 1px solid hsl(var(--primary) / 0.3);
+    background: var(--gradient-cyber);
+  }
+  
+  .terminal-bg {
+    background: var(--gradient-terminal);
+  }
+}
