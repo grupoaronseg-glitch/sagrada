@@ -53,21 +53,64 @@ tar -xzf geckodriver-v${GECKODRIVER_VERSION}-${ARCH}.tar.gz
 sudo mv geckodriver /usr/local/bin/
 sudo chmod +x /usr/local/bin/geckodriver
 
+# Verificar se geckodriver foi instalado
+if which geckodriver > /dev/null; then
+    echo "✅ Geckodriver instalado: $(which geckodriver)"
+else
+    echo "❌ Erro na instalação do Geckodriver!"
+    exit 1
+fi
+
 # Configurar MariaDB
-echo "📦 Configurando MariaDB..."
+echo "📦 Iniciando MariaDB..."
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
 
-# Configurar banco de dados
-echo "🗄️ Configurando banco de dados..."
-sudo mysql -e "CREATE DATABASE IF NOT EXISTS autoclick_db;"
-sudo mysql -e "CREATE USER IF NOT EXISTS 'autoclick'@'localhost' IDENTIFIED BY 'autoclick123';"
-sudo mysql -e "GRANT ALL PRIVILEGES ON autoclick_db.* TO 'autoclick'@'localhost';"
-sudo mysql -e "FLUSH PRIVILEGES;"
+# Aguardar MariaDB inicializar
+sleep 3
 
+# Executar script de correção do MariaDB
+if [ -f "fix_mariadb.sh" ]; then
+    echo "🔧 Executando correção do MariaDB..."
+    chmod +x fix_mariadb.sh
+    ./fix_mariadb.sh
+    
+    if [ $? -eq 0 ]; then
+        echo "✅ MariaDB configurado corretamente!"
+    else
+        echo "❌ Erro na configuração do MariaDB!"
+        exit 1
+    fi
+else
+    # Configuração manual caso o script não exista
+    echo "🗄️ Configurando banco de dados manualmente..."
+    
+    # Configurar root com senha
+    sudo mysql << 'EOF'
+ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password USING PASSWORD('root123');
+FLUSH PRIVILEGES;
+EOF
+
+    # Criar database e usuário
+    mysql -u root -proot123 << 'EOF'
+DROP DATABASE IF EXISTS autoclick_db;
+CREATE DATABASE autoclick_db;
+DROP USER IF EXISTS 'autoclick'@'localhost';
+CREATE USER 'autoclick'@'localhost' IDENTIFIED BY 'autoclick123';
+GRANT ALL PRIVILEGES ON autoclick_db.* TO 'autoclick'@'localhost';
+FLUSH PRIVILEGES;
+EOF
+
+fi
+
+echo ""
 echo "✅ Instalação das dependências concluída!"
 echo ""
 echo "📋 Próximos passos:"
-echo "1. Clone ou copie os arquivos do projeto para um diretório"
-echo "2. Execute: cd /caminho/do/projeto && ./setup.sh"
-echo "3. Execute: ./start.sh"
+echo "1. Execute: ./setup.sh"
+echo "2. Execute: ./start.sh"
+echo ""
+echo "🔧 Credenciais do banco:"
+echo "   Usuário: autoclick"
+echo "   Senha: autoclick123"
+echo "   Database: autoclick_db"
