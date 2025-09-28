@@ -128,6 +128,24 @@ async def get_site(site_id: str, db: Session = Depends(get_db)):
 @api_router.post("/sites", response_model=SiteSchema)
 async def create_site(site: SiteCreate, db: Session = Depends(get_db)):
     """Create a new site"""
+    # Validate input data
+    if not site.name or not site.name.strip():
+        raise HTTPException(status_code=400, detail="Site name is required")
+    
+    if not site.url or not site.url.strip():
+        raise HTTPException(status_code=400, detail="Site URL is required")
+    
+    # Validate URL format
+    if not site.url.startswith(('http://', 'https://')):
+        raise HTTPException(status_code=400, detail="URL must start with http:// or https://")
+    
+    # Validate duration and interval
+    if site.duration < 1 or site.duration > 300:
+        raise HTTPException(status_code=400, detail="Duration must be between 1 and 300 seconds")
+    
+    if site.interval < 1 or site.interval > 3600:
+        raise HTTPException(status_code=400, detail="Interval must be between 1 and 3600 seconds")
+    
     # Check if we've reached the maximum number of sites
     max_sites = int(get_setting(db, "max_sites") or "10")
     current_count = db.query(Site).count()
@@ -142,8 +160,8 @@ async def create_site(site: SiteCreate, db: Session = Depends(get_db)):
     
     db_site = Site(
         id=str(uuid.uuid4()),
-        name=site.name,
-        url=site.url,
+        name=site.name.strip(),
+        url=site.url.strip(),
         duration=site.duration,
         interval=site.interval,
         is_active=False,
@@ -161,8 +179,8 @@ async def create_site(site: SiteCreate, db: Session = Depends(get_db)):
         id=str(uuid.uuid4()),
         level="success",
         action="Site Created",
-        site_name=site.name,
-        message=f"Site '{site.name}' created successfully",
+        site_name=site.name.strip(),
+        message=f"Site '{site.name.strip()}' created successfully",
         timestamp=datetime.now(timezone.utc),
         created_at=datetime.now(timezone.utc)
     )
