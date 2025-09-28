@@ -2,22 +2,13 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Globe, Play, Pause, Square, Settings, FileText, Download } from "lucide-react";
+import { Activity, Globe, Play, Pause, Square, Settings, FileText, Download, Wifi, WifiOff } from "lucide-react";
 import { SiteManager } from "./SiteManager";
 import { ControlPanel } from "./ControlPanel";
 import { LogsPanel } from "./LogsPanel";
 import { StatsPanel } from "./StatsPanel";
-
-interface Site {
-  id: string;
-  url: string;
-  name: string;
-  duration: number;
-  interval: number;
-  isActive: boolean;
-  clicks: number;
-  lastAccess?: Date;
-}
+import { sitesAPI, controlAPI, websocketService, Site, SystemStatus } from '@/services/api';
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const [sites, setSites] = useState<Site[]>([]);
@@ -25,35 +16,135 @@ const Dashboard = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [globalInterval, setGlobalInterval] = useState(10);
   const [activeTab, setActiveTab] = useState<"sites" | "control" | "logs" | "stats">("sites");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isConnected, setIsConnected] = useState(false);
+  const { toast } = useToast();
 
-  // Mock data for demo
+  // Load initial data
   useEffect(() => {
-    setSites([
-      {
-        id: "1",
-        url: "https://example.com",
-        name: "Example Site",
-        duration: 5,
-        interval: 10,
-        isActive: true,
-        clicks: 142,
-        lastAccess: new Date(),
-      },
-      {
-        id: "2", 
-        url: "https://google.com",
-        name: "Google",
-        duration: 3,
-        interval: 15,
-        isActive: false,
-        clicks: 89,
-        lastAccess: new Date(Date.now() - 300000),
-      },
-    ]);
-  }, []);
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Load sites
+        const sitesResponse = await sitesAPI.getAll();
+        setSites(sitesResponse.data || []);
+        
+        // Load system status
+        const statusResponse = await controlAPI.getStatus();
+        const status: SystemStatus = statusResponse.data;
+        setIsRunning(status.is_running || false);
+        setIsPaused(status.is_paused || false);
+        setGlobalInterval(status.global_interval || 10);
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+        toast({
+          title: "Erro",
+          description: "Erro ao carregar dados do sistema",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const activeSites = sites.filter(site => site.isActive);
-  const totalClicks = sites.reduce((sum, site) => sum + site.clicks, 0);
+    loadData();
+  }, [toast]);
+
+  // Set up WebSocket connection
+  useEffect(() => {
+    websocketService.connect();
+
+    const handleConnected = () => {
+      setIsConnected(true);
+      toast({
+        title: "Conectado",
+        description: "Conexão com o servidor estabelecida",
+      });
+    };
+
+    const handleDisconnected = () => {
+      setIsConnected(false);
+      toast({
+        title: "Desconectado",
+        description: "Conexão com o servidor perdida",
+        variant: "destructive",
+      });
+    };
+
+    const handleError = (error: any) => {
+      toast({
+        title: "Erro de Conexão",
+        description: "Erro na comunicação com o servidor",
+        variant: "destructive",
+      });
+    };
+
+    const handleStatus = (data: any) => {
+      const status = data.data;
+      setIsRunning(status.is_running || false);
+      setIsPaused(status.is_paused || false);
+    };
+
+    const handleSiteCreated = (data: any) => {
+      setSites(prevSites => [data.data.site, ...prevSites]);
+    };
+
+    const handleSiteUpdated = (data: any) => {
+      setSites(prevSites => prevSites.map(site => 
+        site.id === data.data.site.id ? { ...site, ...data.data.site } : site
+      ));
+    };
+
+    const handleSiteDeleted = (data: any) => {
+      setSites(prevSites => prevSites.filter(site => site.id !== data.data.site_id));
+    };
+
+    const handleSiteToggled = (data: any) => {
+      setSites(prevSites => prevSites.map(site => 
+        site.id === data.data.site_id 
+          ? { ...site, is_active: data.data.is_active }
+          : site
+      ));
+    };
+
+    // Add event listeners
+    websocketService.on('connected', handleConnected);
+    websocketService.on('disconnected', handleDisconnected);
+    websocketService.on('error', handleError);
+    websocketService.on('status', handleStatus);
+    websocketService.on('site_created', handleSiteCreated);
+    websocketService.on('site_updated', handleSiteUpdated);
+    websocketService.on('site_deleted', handleSiteDeleted);
+    websocketService.on('site_toggled', handleSiteToggled);
+
+    return () => {
+      websocketService.off('connected', handleConnected);
+      websocketService.off('disconnected', handleDisconnected);
+      websocketService.off('error', handleError);
+      websocketService.off('status', handleStatus);
+      websocketService.off('site_created', handleSiteCreated);
+      websocketService.off('site_updated', handleSiteUpdated);
+      websocketService.off('site_deleted', handleSiteDeleted);
+      websocketService.off('site_toggled', handleSiteToggled);
+      websocketService.disconnect();
+    };
+  }, [toast]);
+
+  const activeSites = sites.filter(site => site.is_active);
+  const totalClicks = sites.reduce((sum, site) => sum + (site.clicks || 0), 0);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Carregando sistema...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -68,10 +159,20 @@ const Dashboard = () => {
               Sistema automatizado de navegação - Tema Red & Black
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Badge variant={isRunning ? "default" : "secondary"} className="pulse-glow">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {isConnected ? (
+                <Wifi className="h-4 w-4 text-green-500" />
+              ) : (
+                <WifiOff className="h-4 w-4 text-red-500" />
+              )}
+              <span className={`text-sm ${isConnected ? 'text-green-500' : 'text-red-500'}`}>
+                {isConnected ? 'Conectado' : 'Desconectado'}
+              </span>
+            </div>
+            <Badge variant={isRunning && !isPaused ? "default" : "secondary"} className="pulse-glow">
               <Activity className="mr-1 h-3 w-3" />
-              {isRunning ? "Ativo" : "Inativo"}
+              {isPaused ? "Pausado" : isRunning ? "Ativo" : "Inativo"}
             </Badge>
           </div>
         </div>
@@ -146,6 +247,7 @@ const Dashboard = () => {
               variant={activeTab === tab.id ? "default" : "ghost"}
               className="flex-1"
               onClick={() => setActiveTab(tab.id as any)}
+              data-testid={`tab-${tab.id}`}
             >
               <tab.icon className="mr-2 h-4 w-4" />
               {tab.label}
@@ -156,7 +258,11 @@ const Dashboard = () => {
         {/* Tab Content */}
         <div className="space-y-6">
           {activeTab === "sites" && (
-            <SiteManager sites={sites} setSites={setSites} />
+            <SiteManager 
+              sites={sites} 
+              setSites={setSites} 
+              isConnected={isConnected}
+            />
           )}
           {activeTab === "control" && (
             <ControlPanel
@@ -167,10 +273,15 @@ const Dashboard = () => {
               globalInterval={globalInterval}
               setGlobalInterval={setGlobalInterval}
               activeSites={activeSites}
+              isConnected={isConnected}
             />
           )}
-          {activeTab === "logs" && <LogsPanel />}
-          {activeTab === "stats" && <StatsPanel sites={sites} />}
+          {activeTab === "logs" && (
+            <LogsPanel isConnected={isConnected} />
+          )}
+          {activeTab === "stats" && (
+            <StatsPanel sites={sites} isConnected={isConnected} />
+          )}
         </div>
       </div>
     </div>
