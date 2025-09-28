@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test script to verify database connectivity and create tables"""
+"""Test script to verify database connectivity and create tables - SQLite Version"""
 
 import sys
 import os
@@ -11,7 +11,7 @@ from sqlalchemy.exc import OperationalError
 def test_database():
     try:
         # Test database connection
-        print("Testing database connection...")
+        print("Testing SQLite database connection...")
         db = next(get_db())
         
         # Create tables
@@ -22,7 +22,8 @@ def test_database():
         print("Initializing system settings...")
         init_system_settings(db)
         
-        print("✅ Database setup completed successfully!")
+        print("✅ SQLite database setup completed successfully!")
+        print(f"📁 Database file: {os.path.abspath('autoclick.db')}")
         db.close()
         
     except OperationalError as e:
@@ -36,8 +37,8 @@ def test_database():
 
 if __name__ == "__main__":
     if test_database():
-        print("Database is ready!")
+        print("🎉 SQLite database is ready!")
         sys.exit(0)
     else:
-        print("Database setup failed!")
+        print("❌ Database setup failed!")
         sys.exit(1)
