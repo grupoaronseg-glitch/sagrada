@@ -1,0 +1,209 @@
+[
+  {
+    "id": "47c15bc8-0014-4b99-9b8a-bb8a54d2fd9e",
+    "timestamp": "2025-09-28T14:07:58",
+    "level": "info",
+    "action": "Site Opening",
+    "site_name": "Google",
+    "message": "Opening Google",
+    "duration": null
+  },
+  {
+    "id": "ff6c566a-06ae-4eeb-b752-1245e2b7a5e8",
+    "timestamp": "2025-09-28T14:07:50",
+    "level": "info",
+    "action": "Site Status Changed",
+    "site_name": "Example Site",
+    "message": "Site 'Example Site' activated",
+    "duration": null
+  },
+  {
+    "id": "39105da0-2bbb-4ab2-ad83-ddce3f5e8e86",
+    "timestamp": "2025-09-28T14:07:48",
+    "level": "info",
+    "action": "Site Closed",
+    "site_name": "Google",
+    "message": "Closed Google after 5s",
+    "duration": 5.52758
+  },
+  {
+    "id": "188985d2-cb34-447a-a053-2c472452fc53",
+    "timestamp": "2025-09-28T14:07:44",
+    "level": "success",
+    "action": "Site Created",
+    "site_name": "Example Site",
+    "message": "Site 'Example Site' created successfully",
+    "duration": null
+  },
+  {
+    "id": "65a0bcda-e163-4f81-8b47-c8a3c2e4ed10",
+    "timestamp": "2025-09-28T14:07:43",
+    "level": "info",
+    "action": "Site Opening",
+    "site_name": "Google",
+    "message": "Opening Google",
+    "duration": null
+  },
+  {
+    "id": "e004483a-db52-40c6-9b3e-50d086421690",
+    "timestamp": "2025-09-28T14:07:43",
+    "level": "success",
+    "action": "Site Loaded",
+    "site_name": "Google",
+    "message": "Successfully loaded Google",
+    "duration": 0.522483
+  },
+  {
+    "id": "3da24d0a-d0fa-4c73-9dc4-721874612684",
+    "timestamp": "2025-09-28T14:07:33",
+    "level": "info",
+    "action": "Site Closed",
+    "site_name": "Google",
+    "message": "Closed Google after 5s",
+    "duration": 5.57637
+  },
+  {
+    "id": "e86b647c-ed44-4fee-a3d3-1d1f8a46bc2d",
+    "timestamp": "2025-09-28T14:07:28",
+    "level": "success",
+    "action": "Site Loaded",
+    "site_name": "Google",
+    "message": "Successfully loaded Google",
+    "duration": 0.570606
+  },
+  {
+    "id": "bb91c0a3-d1ba-45de-a301-4b295193fcb0",
+    "timestamp": "2025-09-28T14:07:27",
+    "level": "info",
+    "action": "Site Opening",
+    "site_name": "Google",
+    "message": "Opening Google",
+    "duration": null
+  },
+  {
+    "id": "64f7cb44-ca48-4c05-b096-f482adce4eda",
+    "timestamp": "2025-09-28T14:07:17",
+    "level": "info",
+    "action": "Site Closed",
+    "site_name": "Google",
+    "message": "Closed Google after 5s",
+    "duration": 6.31391
+  },
+  {
+    "id": "5b3c7281-7192-42c3-b3fb-8f19feccaa29",
+    "timestamp": "2025-09-28T14:07:12",
+    "level": "success",
+    "action": "Site Loaded",
+    "site_name": "Google",
+    "message": "Successfully loaded Google",
+    "duration": 1.30654
+  },
+  {
+    "id": "b9cd9320-184d-42c1-b451-6e6ce3918dc3",
+    "timestamp": "2025-09-28T14:07:11",
+    "level": "info",
+    "action": "Site Opening",
+    "site_name": "Google",
+    "message": "Opening Google",
+    "duration": null
+  },
+  {
+    "id": "e088dfb7-2c6e-40f7-a49a-e6f8c7839fa2",
+    "timestamp": "2025-09-28T14:07:07",
+    "level": "success",
+    "action": "System Started",
+    "site_name": null,
+    "message": "Started automation for 1 sites",
+    "duration": null
+  },
+  {
+    "id": "2b2762b4-0b37-41f7-b899-eb3b60106733",
+    "timestamp": "2025-09-28T14:06:52",
+    "level": "info",
+    "action": "System Startup",
+    "site_name": null,
+    "message": "AutoClick backend started successfully",
+    "duration": null
+  },
+  {
+    "id": "625e415c-cb4b-4ae4-92a1-ab08c095da06",
+    "timestamp": "2025-09-28T14:06:28",
+    "level": "info",
+    "action": "System Startup",
+    "site_name": null,
+    "message": "AutoClick backend started successfully",
+    "duration": null
+  },
+  {
+    "id": "14a39f24-6373-4e99-84a4-8200abd13fd1",
+    "timestamp": "2025-09-28T14:06:27",
+    "level": "info",
+    "action": "System Stopped",
+    "site_name": null,
+    "message": "Automation system stopped successfully",
+    "duration": null
+  },
+  {
+    "id": "7702b3a6-ae84-4a37-9966-22c085534c2c",
+    "timestamp": "2025-09-28T14:05:42",
+    "level": "success",
+    "action": "System Started",
+    "site_name": null,
+    "message": "Started automation for 1 sites",
+    "duration": null
+  },
+  {
+    "id": "e15484bd-74ad-4153-b61d-8dd9250de952",
+    "timestamp": "2025-09-28T14:05:42",
+    "level": "error",
+    "action": "Engine Error",
+    "site_name": "Google",
+    "message": "Critical error in site processing for Google: Message: Unable to obtain driver for firefox; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location\n",
+    "duration": null
+  },
+  {
+    "id": "60276854-a9e9-4e54-9e22-5d8ef76eef48",
+    "timestamp": "2025-09-28T14:05:36",
+    "level": "info",
+    "action": "Site Status Changed",
+    "site_name": "Google",
+    "message": "Site 'Google' activated",
+    "duration": null
+  },
+  {
+    "id": "41a26656-4465-4a2c-9af3-34e31867b579",
+    "timestamp": "2025-09-28T14:05:27",
+    "level": "success",
+    "action": "Site Created",
+    "site_name": "Google",
+    "message": "Site 'Google' created successfully",
+    "duration": null
+  },
+  {
+    "id": "066d7632-7687-4aaf-bcf3-c79376424da0",
+    "timestamp": "2025-09-28T13:58:57",
+    "level": "info",
+    "action": "System Startup",
+    "site_name": null,
+    "message": "AutoClick backend started successfully",
+    "duration": null
+  },
+  {
+    "id": "96aa9d7c-79ad-44d8-9306-a6691ddd5d60",
+    "timestamp": "2025-09-28T13:58:39",
+    "level": "info",
+    "action": "System Startup",
+    "site_name": null,
+    "message": "AutoClick backend started successfully",
+    "duration": null
+  },
+  {
+    "id": "33ad758c-4519-4119-85c5-8a4d7b440320",
+    "timestamp": "2025-09-28T13:54:18",
+    "level": "info",
+    "action": "System Startup",
+    "site_name": null,
+    "message": "AutoClick backend started successfully",
+    "duration": null
+  }
+]
