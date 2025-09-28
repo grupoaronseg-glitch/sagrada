@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Toaster } from "./components/ui/sonner";
-import { useToast } from "./components/ui/use-toast";
-import Dashboard from "./components/Dashboard";
-import { websocketService } from './services/api';
-import './App.css';
+import { Toaster } from "@/components/ui/sonner";
+import { useToast } from "@/hooks/use-toast";
+import Dashboard from "@/components/Dashboard";
+import { websocketService } from '@/services/api';
+import '@/App.css';
 
 function App() {
   const { toast } = useToast();
