@@ -37,12 +37,21 @@ class AutomationEngine:
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--disable-gpu')
+        options.add_argument('--disable-extensions')
+        options.add_argument('--disable-plugins')
         options.add_argument('--window-size=1920,1080')
         options.add_argument('--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
         
+        # Set Firefox preferences for headless operation
+        options.set_preference('browser.privatebrowsing.autostart', True)
+        options.set_preference('browser.startup.homepage', 'about:blank')
+        options.set_preference('startup.homepage_welcome_url', 'about:blank')
+        options.set_preference('startup.homepage_welcome_url.additional', 'about:blank')
+        
         try:
-            # Try to use geckodriver from system PATH
-            browser = webdriver.Firefox(options=options)
+            # Set up Firefox service with explicit geckodriver path
+            service = FirefoxService(executable_path='/usr/local/bin/geckodriver')
+            browser = webdriver.Firefox(service=service, options=options)
             browser.set_page_load_timeout(30)
             browser.implicitly_wait(10)
             return browser
