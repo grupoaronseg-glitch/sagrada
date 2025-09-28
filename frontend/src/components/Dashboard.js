@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Activity, Globe, Play, Pause, Square, Settings, FileText, Download, Wifi, WifiOff } from "lucide-react";
-import { SiteManager } from "./SiteManager";
-import { ControlPanel } from "./ControlPanel";
-import { LogsPanel } from "./LogsPanel";
-import { StatsPanel } from "./StatsPanel";
-import { sitesAPI, controlAPI, websocketService } from '../services/api';
-import { useToast } from "./ui/use-toast";
+import { SiteManager } from "@/components/SiteManager";
+import { ControlPanel } from "@/components/ControlPanel";
+import { LogsPanel } from "@/components/LogsPanel";
+import { StatsPanel } from "@/components/StatsPanel";
+import { sitesAPI, controlAPI, websocketService } from '@/services/api';
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = ({ isConnected }) => {
   const [sites, setSites] = useState([]);
