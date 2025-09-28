@@ -33,7 +33,7 @@ class WebSocketTester:
         try:
             print("🔌 Testing WebSocket Connection...")
             
-            async with websockets.connect(self.ws_url, timeout=10) as websocket:
+            async with websockets.connect(self.ws_url) as websocket:
                 self.log_test("WebSocket Connection", True, "Successfully connected")
                 
                 # Wait for welcome message
