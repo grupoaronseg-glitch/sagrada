@@ -8,10 +8,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Database Configuration
-MYSQL_URL = os.environ.get('MYSQL_URL', 'mysql+pymysql://root:password@localhost:3306/autoclick_db')
+# Database Configuration - SQLite
+DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///./autoclick.db')
 
-engine = create_engine(MYSQL_URL, echo=False)
+# SQLite specific configuration
+engine = create_engine(
+    DATABASE_URL, 
+    echo=False,
+    connect_args={"check_same_thread": False}  # Necessário para SQLite + FastAPI
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
