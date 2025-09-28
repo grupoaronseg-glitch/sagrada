@@ -1,0 +1,177 @@
+{
+  "timestamp": "2025-09-28T14:10:41.173996",
+  "total_tests": 24,
+  "passed_tests": 21,
+  "failed_tests": 3,
+  "success_rate": 87.5,
+  "test_results": [
+    {
+      "test_name": "Health Check",
+      "status": "PASS",
+      "details": "Status: 200, Engine running: True",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:36.981682"
+    },
+    {
+      "test_name": "Root Endpoint",
+      "status": "PASS",
+      "details": "Status: 200, Message: AutoClick Backend API",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:37.016805"
+    },
+    {
+      "test_name": "System Status",
+      "status": "PASS",
+      "details": "Running: True, Paused: False, Sites: 2",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:37.110328"
+    },
+    {
+      "test_name": "Get Sites",
+      "status": "PASS",
+      "details": "Retrieved 2 sites",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:37.144246"
+    },
+    {
+      "test_name": "Create Site",
+      "status": "PASS",
+      "details": "Created site: API Test Site (ID: 076f5aef-f57c-4e22-8f35-00f31f4aaa6a)",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:37.186376"
+    },
+    {
+      "test_name": "Get Site by ID",
+      "status": "PASS",
+      "details": "Retrieved site: API Test Site",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:37.219106"
+    },
+    {
+      "test_name": "Update Site",
+      "status": "PASS",
+      "details": "Updated site: Updated Site fcd05b36",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:37.298861"
+    },
+    {
+      "test_name": "Toggle Site",
+      "status": "PASS",
+      "details": "Site toggled, active: True",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:37.337901"
+    },
+    {
+      "test_name": "Toggle Site",
+      "status": "PASS",
+      "details": "Site toggled, active: False",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:37.375933"
+    },
+    {
+      "test_name": "Start Automation",
+      "status": "FAIL",
+      "details": "Status: 400, Response: N/A",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:38.410304"
+    },
+    {
+      "test_name": "Get Logs",
+      "status": "PASS",
+      "details": "Retrieved 58 log entries",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:38.448728"
+    },
+    {
+      "test_name": "Filter Logs",
+      "status": "PASS",
+      "details": "Retrieved 10 filtered log entries",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:38.482700"
+    },
+    {
+      "test_name": "Export Logs JSON",
+      "status": "PASS",
+      "details": "Export status: 200",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:38.545064"
+    },
+    {
+      "test_name": "Export Logs CSV",
+      "status": "PASS",
+      "details": "Export status: 200",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:38.588827"
+    },
+    {
+      "test_name": "Export Logs TXT",
+      "status": "PASS",
+      "details": "Export status: 200",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:38.623736"
+    },
+    {
+      "test_name": "Get Settings",
+      "status": "PASS",
+      "details": "Retrieved 6 settings",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:38.661975"
+    },
+    {
+      "test_name": "Update Setting",
+      "status": "PASS",
+      "details": "Status: 200, Response: {'message': \"Setting 'global_interval' updated successfully\", 'value': '15'}",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:40.870106"
+    },
+    {
+      "test_name": "Restore Setting",
+      "status": "PASS",
+      "details": "Status: 200",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:40.906142"
+    },
+    {
+      "test_name": "Export Sites",
+      "status": "FAIL",
+      "details": "Export status: 404",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:40.940054"
+    },
+    {
+      "test_name": "Bulk Import Sites",
+      "status": "PASS",
+      "details": "Created 2 sites, Status: 200",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:40.978080"
+    },
+    {
+      "test_name": "Get Non-existent Site",
+      "status": "PASS",
+      "details": "Correctly returned 404",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:41.013952"
+    },
+    {
+      "test_name": "Create Invalid Site",
+      "status": "FAIL",
+      "details": "Correctly handled invalid data, Status: 200",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:41.053131"
+    },
+    {
+      "test_name": "Update Non-existent Site",
+      "status": "PASS",
+      "details": "Correctly returned 404",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:41.089060"
+    },
+    {
+      "test_name": "Delete Site",
+      "status": "PASS",
+      "details": "Site deleted successfully",
+      "response_data": null,
+      "timestamp": "2025-09-28T14:10:41.173658"
+    }
+  ]
+}
