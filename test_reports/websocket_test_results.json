@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-09-28T14:12:14.382281",
+  "test_results": [
+    {
+      "test_name": "WebSocket Connection",
+      "status": "FAIL",
+      "details": "Unexpected error: BaseEventLoop.create_connection() got an unexpected keyword argument 'timeout'",
+      "timestamp": "2025-09-28T14:12:14.382182"
+    }
+  ],
+  "messages_received": []
+}
