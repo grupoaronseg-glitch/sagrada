@@ -111,6 +111,30 @@ async def websocket_endpoint(websocket: WebSocket, client_id: Optional[str] = No
 
 # ============== SITE MANAGEMENT ENDPOINTS ==============
 
+@api_router.get("/sites/export")
+async def export_sites(db: Session = Depends(get_db)):
+    """Export all sites configuration"""
+    sites = db.query(Site).all()
+    
+    data = [
+        {
+            "name": site.name,
+            "url": site.url,
+            "duration": site.duration,
+            "interval": site.interval
+        }
+        for site in sites
+    ]
+    
+    filename = f"autoclick-sites-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
+    content = json.dumps(data, indent=2)
+    
+    return StreamingResponse(
+        io.BytesIO(content.encode()),
+        media_type="application/json",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
 @api_router.get("/sites", response_model=List[SiteSchema])
 async def get_sites(db: Session = Depends(get_db)):
     """Get all sites"""
