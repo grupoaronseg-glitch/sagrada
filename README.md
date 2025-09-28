@@ -8,7 +8,7 @@ Um sistema completo de automação web com dashboard profissional, desenvolvido 
 - **Dashboard Profissional**: Interface moderna com tema Red & Black 
 - **Controle Total**: Iniciar/pausar/parar automação com configurações flexíveis
 - **Logs em Tempo Real**: WebSocket para monitoramento ao vivo
-- **Banco de Dados**: Persistência completa com MySQL/MariaDB
+- **Banco SQLite**: Persistência local SEM servidor de banco (muito mais simples!)
 - **Exportação**: Logs e configurações exportáveis em TXT/CSV/JSON
 - **Multi-site**: Suporte para até 10 sites simultâneos
 
@@ -17,10 +17,10 @@ Um sistema completo de automação web com dashboard profissional, desenvolvido 
 - Kali Linux (recomendado) ou Debian/Ubuntu
 - Python 3.8+
 - Node.js 16+
-- MariaDB/MySQL
 - Firefox
+- **✅ SEM MariaDB/MySQL - Usa SQLite!**
 
-## 🔧 Instalação Completa
+## 🔧 Instalação SIMPLES
 
 ### 1. Baixar o Projeto
 
@@ -30,19 +30,19 @@ git clone [URL_DO_SEU_REPOSITORIO] autoclick-system
 cd autoclick-system
 ```
 
-### 2. Executar Instalador Automático
+### 2. Instalação Automática (SEM complicações!)
 
 ```bash
-# Dar permissão e executar o instalador
-chmod +x install_kali.sh setup.sh start.sh
-./install_kali.sh
+# Dar permissão e executar o instalador SIMPLES
+chmod +x install_simple.sh setup_sqlite.sh start.sh
+./install_simple.sh
 ```
 
 ### 3. Configurar o Ambiente
 
 ```bash
-# Configurar ambiente Python e Node.js
-./setup.sh
+# Configurar ambiente Python e Node.js (cria banco SQLite automaticamente)
+./setup_sqlite.sh
 ```
 
 ### 4. Iniciar o Sistema
@@ -86,20 +86,19 @@ Após inicialização, acesse:
 
 ## 🛠️ Configuração Avançada
 
-### Banco de Dados
-- Host: localhost
-- Porta: 3306
-- Database: autoclick_db
-- Usuário: autoclick
-- Senha: autoclick123
+### Banco de Dados SQLite
+- **Arquivo**: `backend/autoclick.db`
+- **Local**: No diretório do projeto
+- **Sem servidor**: Funciona diretamente
+- **Backup**: Basta copiar o arquivo `.db`
 
 ### Variáveis de Ambiente
 
 Edite `backend/.env` para customizar:
 
 ```env
-# Database
-MYSQL_URL=mysql+pymysql://autoclick:autoclick123@localhost:3306/autoclick_db
+# Database SQLite (local)
+DATABASE_URL=sqlite:///./autoclick.db
 
 # Sistema
 MAX_SITES=10
@@ -139,17 +138,13 @@ sudo mv geckodriver /usr/local/bin/
 sudo chmod +x /usr/local/bin/geckodriver
 ```
 
-### Banco de dados não conecta
+### Banco SQLite corrompido
 ```bash
-# Reiniciar MariaDB
-sudo systemctl restart mariadb
-sudo systemctl status mariadb
-
-# Recriar usuário
-sudo mysql -e "DROP USER IF EXISTS 'autoclick'@'localhost';"
-sudo mysql -e "CREATE USER 'autoclick'@'localhost' IDENTIFIED BY 'autoclick123';"
-sudo mysql -e "GRANT ALL PRIVILEGES ON autoclick_db.* TO 'autoclick'@'localhost';"
-sudo mysql -e "FLUSH PRIVILEGES;"
+# Recriar banco (perde dados!)
+rm backend/autoclick.db
+cd backend
+source venv/bin/activate
+python test_db.py
 ```
 
 ## 🚨 Comandos Úteis
@@ -159,14 +154,17 @@ sudo mysql -e "FLUSH PRIVILEGES;"
 pkill -f "python.*server.py"
 pkill -f "yarn.*dev"
 
-# Ver logs em tempo real
-tail -f backend/logs.log
+# Ver tamanho do banco
+ls -lh backend/autoclick.db
+
+# Backup do banco
+cp backend/autoclick.db backup-$(date +%Y%m%d).db
 
 # Testar API
 curl http://localhost:8001/api/health
 
-# Ver status do banco
-sudo systemctl status mariadb
+# Verificar tabelas SQLite
+sqlite3 backend/autoclick.db ".tables"
 ```
 
 ## 📂 Estrutura do Projeto
@@ -175,8 +173,9 @@ sudo systemctl status mariadb
 autoclick-system/
 ├── backend/                 # API FastAPI
 │   ├── server.py           # Servidor principal
-│   ├── database.py         # Modelos do banco
+│   ├── database.py         # Modelos SQLite
 │   ├── automation_engine.py # Motor de automação
+│   ├── autoclick.db        # Banco SQLite
 │   ├── requirements.txt    # Dependências Python
 │   └── .env               # Configurações
 ├── frontend/               # Interface React
@@ -186,8 +185,8 @@ autoclick-system/
 │   │   └── pages/         # Páginas
 │   ├── package.json       # Dependências Node.js
 │   └── vite.config.ts     # Configuração Vite
-├── install_kali.sh         # Instalador automático
-├── setup.sh               # Configuração ambiente
+├── install_simple.sh       # Instalador SIMPLES
+├── setup_sqlite.sh        # Configuração SQLite
 ├── start.sh               # Script de inicialização
 └── README.md              # Este arquivo
 ```
@@ -195,26 +194,33 @@ autoclick-system/
 ## 🔐 Segurança
 
 - Sistema projetado para uso local/desenvolvimento
+- Banco SQLite local (sem rede)
 - Não exponha diretamente na internet
 - Use firewall para restringir acessos externos
-- Altere credenciais padrão em produção
 
 ## 📞 Suporte
 
 Para problemas ou dúvidas:
 
-1. Verifique os logs: `backend/logs.log`
-2. Teste componentes individualmente
-3. Verifique se todas as dependências estão instaladas
-4. Reinicie os serviços: `sudo systemctl restart mariadb`
+1. Execute: `./diagnose_sqlite.sh`
+2. Verifique se todas as dependências estão instaladas
+3. Reinicie com: `./start.sh`
 
 ## 🎯 Performance
 
 - Máximo 10 sites simultâneos (recomendado)
 - Intervalo mínimo de 1 segundo entre execuções
 - Usa Firefox headless para economia de recursos
-- Logs automaticamente limpos após 1000 entradas
+- SQLite é muito rápido para aplicações locais
+
+## ✅ Vantagens da Versão SQLite
+
+- **🚫 SEM MariaDB/MySQL**: Sem complicações de servidor
+- **📁 Arquivo único**: Fácil backup e portabilidade
+- **⚡ Rápido**: SQLite é otimizado para aplicações locais
+- **🔧 Simples**: Sem configuração de usuários/senhas
+- **💾 Leve**: Banco ocupa poucos MB
 
 ---
 
-**Desenvolvido para Kali Linux - Sistema de Automação Web Profissional** 🚀
+**Desenvolvido para Kali Linux - Sistema de Automação Web Profissional (SQLite Edition)** 🚀
