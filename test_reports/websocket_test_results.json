@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-09-28T14:12:14.382281",
+  "timestamp": "2025-09-28T14:12:38.787159",
   "test_results": [
     {
       "test_name": "WebSocket Connection",
       "status": "FAIL",
-      "details": "Unexpected error: BaseEventLoop.create_connection() got an unexpected keyword argument 'timeout'",
-      "timestamp": "2025-09-28T14:12:14.382182"
+      "details": "WebSocket error: server rejected WebSocket connection: HTTP 502",
+      "timestamp": "2025-09-28T14:12:38.787024"
     }
   ],
   "messages_received": []
